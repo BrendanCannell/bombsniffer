@@ -1,0 +1,23 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  padding: 1px;
+}
+
+.board > * > * {
+  width: 25px;
+  height: 25px;
+  border-top:    solid 1px gray;
+  border-left:   solid 1px gray;
+}
+.board > *:last-child > * {
+  border-bottom: solid 1px gray;
+}
+.board > * > *:last-child {
+  border-right:  solid 1px gray;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}

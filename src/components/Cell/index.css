@@ -1,0 +1,35 @@
+.cell {
+  padding: 0.1em;
+  line-height: 1;
+  color: black;
+  text-align: center;
+  user-select: none;
+}
+
+.cell.revealed {
+  background-color: white;
+}
+.cell:not(.revealed) {
+  background-color: lightgray;
+}
+
+.board:not(.game-done) .cell.flagged,
+.board.game-done       .cell.flagged.bombed {
+  color: red;
+}
+.board.game-done       .cell.flagged:not(.bombed),
+.board.game-done       .cell.bombed.revealed {
+  background-color: red;
+  color: white;
+}
+
+/* 1-4 are from Minesweeper */
+.adjacent-bomb-count-1 { color: blue; }
+.adjacent-bomb-count-2 { color: green; }
+.adjacent-bomb-count-3 { color: red; }
+.adjacent-bomb-count-4 { color: navy; }
+/* 5-8 are just made up */
+.adjacent-bomb-count-5 { color: orange; }
+.adjacent-bomb-count-6 { color: purple; }
+.adjacent-bomb-count-7 { color: turquoise; }
+.adjacent-bomb-count-8 { color: pink; }
