@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/bombsniffer/static/css/main.8fa39f72.chunk.css",
+    "main.js": "/bombsniffer/static/js/main.ccc32c3f.chunk.js",
+    "main.js.map": "/bombsniffer/static/js/main.ccc32c3f.chunk.js.map",
+    "runtime-main.js": "/bombsniffer/static/js/runtime-main.ffa1bd28.js",
+    "runtime-main.js.map": "/bombsniffer/static/js/runtime-main.ffa1bd28.js.map",
+    "static/js/2.d598dd66.chunk.js": "/bombsniffer/static/js/2.d598dd66.chunk.js",
+    "static/js/2.d598dd66.chunk.js.map": "/bombsniffer/static/js/2.d598dd66.chunk.js.map",
+    "index.html": "/bombsniffer/index.html",
+    "precache-manifest.aad533a3cc801baafcdf896caeca5649.js": "/bombsniffer/precache-manifest.aad533a3cc801baafcdf896caeca5649.js",
+    "service-worker.js": "/bombsniffer/service-worker.js",
+    "static/css/main.8fa39f72.chunk.css.map": "/bombsniffer/static/css/main.8fa39f72.chunk.css.map",
+    "static/js/2.d598dd66.chunk.js.LICENSE.txt": "/bombsniffer/static/js/2.d598dd66.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ffa1bd28.js",
+    "static/js/2.d598dd66.chunk.js",
+    "static/css/main.8fa39f72.chunk.css",
+    "static/js/main.ccc32c3f.chunk.js"
+  ]
+}
