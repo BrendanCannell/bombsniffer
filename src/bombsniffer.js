@@ -7,7 +7,8 @@ export function makeBoard({width, height, bombCount}) {
         revealed: false,
         // Denormalized context:
         location: [r, c],
-        adjacentBombCount: 0
+        adjacentBombCount: 0,
+        adjacentFlagCount: 0
       })))
   return {new: true, rows, bombCount, height, width}
 }
@@ -18,52 +19,73 @@ export function copy(board) {
 }
 
 export function toggleFlagged(board, location) {
-  let [row, column] = location
-  let cell = board.rows[row][column]
-  if (!isDone(board))
-    cell.flagged = !cell.flagged
+  let cell = getCell(board, location)
+  if (isDone(board) || cell.revealed) return board
+  cell.flagged = !cell.flagged
+  forEachAdjacent(board, location, (neighbor) => neighbor.adjacentFlagCount += cell.flagged ? 1 : -1)
   return board
 }
 
 export function select(board, location) {
   if (board.new) {
-    setBombs(board, location)
-    putDerived(board)
-    board.new = false
+    initialize(board, location)
   } 
-  let [row, column] = location
-  let cell = board.rows[row][column]
-  if (!isDone(board) && !cell.flagged)
-    if (cell.bombed)
-      // Game over
-      cell.revealed = true
-    else
-      revealRegion(board, location)
+  let cell = getCell(board, location)
+  if (cell.flagged || isDone(board)) return board
+  if (!cell.revealed) {
+    cell.revealed = true
+    if (!cell.bombed) revealRegion(board, location)
+  }
+  else if (cell.adjacentBombCount === cell.adjacentFlagCount) {
+    revealUnflaggedAdjacentRegions(board, location)
+  }
   return board
 }
 
 export function isDone(board) {
-  let hasUnknownCell = false
-  for (let row of board.rows) for (let cell of row) {
-    if ( cell.revealed &&  cell.bombed)
-      return 'lose'
-    if (!cell.revealed && !cell.flagged)
-      hasUnknownCell = true
-  }
-  return !hasUnknownCell ? 'win' : false
+  return (
+      isLose(board) ? 'lose'
+    : isWin(board)  ? 'win'
+    : false
+  )
 }
 
-export function flaggedCount(board) {
-  let count = 0
+export function isLose(board) {
   for (let row of board.rows) for (let cell of row)
-    cell.flagged && count++
-  return count
+    if (cell.revealed && cell.bombed) return true
+  return false
 }
 
-function setBombs(board, location) {
+export function isWin(board) {
+  if (isLose(board)) return false
+  let counts = getCounts(board)
+  let isWon = counts.cells === counts.flagged + counts.revealed
+  return isWon 
+}
+
+export function getCounts(board) {
+  let counts = {
+    bombed:   0,
+    flagged:  0,
+    revealed: 0
+  }
+  for (let row of board.rows) for (let cell of row)
+    for (let k in counts) if (cell[k]) counts[k]++
+  counts.cells = board.width * board.height
+  return counts
+}
+
+function getCell(board, location) {
+  let [row, column] = location
+  return board.rows[row][column]
+}
+
+function initialize(board, location) {
+  board.new = false
   let {rows, bombCount, width, height} = board
   let [row, column] = location
   let count = 0
+  // Pick bomb locations
   while (count < bombCount) {
     let r = Math.floor(height * Math.random())
     let c = Math.floor(width  * Math.random())
@@ -74,10 +96,7 @@ function setBombs(board, location) {
     rows[r][c].bombed = true
     count++
   }
-  return board
-}
-
-function putDerived(board) {
+  // Update `adjacentBombCount`
   for (let r = 0; r < board.height; r++)
     for (let c = 0; c < board.width; c++) {
       board.rows[r][c].adjacentBombCount = 0
@@ -86,25 +105,39 @@ function putDerived(board) {
   return board
 }
 
+function revealUnflaggedAdjacentRegions(board, location) {
+  forEachAdjacent(board, location, (adjacent) => {
+    if (!adjacent.flagged)
+      adjacent.revealed = true
+  })
+  if (isDone(board)) return
+  forEachAdjacent(board, location, (adjacent) => {
+    if (!adjacent.flagged && 0 === adjacent.adjacentBombCount)
+      revealRegion(board, adjacent.location)
+  })
+  return board
+}
+
 let visited = new Set()
 
+// Reveal cell
+// If no adjacent bombs, reveal regions of unflagged adjacents
 function revealRegion(board, location) {
-  revealRegionAux(board, location)
+  recur(location)
   visited.clear()
   return board
-}
 
-function revealRegionAux(board, location) {
-  let [row, column] = location
-  let cell = board.rows[row][column]
-  if (visited.has(cell) || cell.flagged) return
-  cell.revealed = true
-  visited.add(cell)
-  if (0 === cell.adjacentBombCount)
-    forEachAdjacent(board, location, (adjacent) => revealRegionAux(board, adjacent.location))
-  return board
+  function recur(location) {
+    let cell = getCell(board, location)
+    if (visited.has(cell)) return; else visited.add(cell)
+    // Main logic:
+    cell.revealed = true
+    if (0 === cell.adjacentBombCount)
+      forEachAdjacent(board, location, (adjacent) => {
+        if (!adjacent.flagged) recur(adjacent.location)
+      })
+  }
 }
-
 
 function forEachAdjacent(board, location, fn) {
   let [row, column] = location

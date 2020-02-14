@@ -1,8 +1,10 @@
 import React from 'react'
 import {useEffect, useReducer, useState} from "./hooks"
 import Board from "./components/Board"
+import Display from "./components/Display"
 import * as B from "./bombsniffer"
 import {Dispatch, GameDone} from "./context"
+import "./App.css"
 
 let boardSpec = {width: 9, height: 9, bombCount: 10}
 // let boardSpec = {width: 3, height: 3, bombCount: 1}
@@ -41,17 +43,15 @@ function App() {
     state.startTime
       ? Math.floor(((state.endTime || currentTime) - state.startTime) / 1000)
       : 0
+  let bombsRemaining = boardSpec.bombCount - B.getCounts(state.board).flagged
   return (
     currentTime &&
     <Dispatch.Provider value={dispatch}>
       <GameDone.Provider value={B.isDone(state.board)}>
-        <p>
-          {"Time: " + elapsedSeconds}
-        </p>
-        <p>
-          {"Remaining: " + (state.board.bombCount - B.flaggedCount(state.board))}
-        </p>
-        <Board rows={state.board.rows} />
+        <div className="bombsniffer">
+          <Display {...{elapsedSeconds, bombsRemaining}} />
+          <Board rows={state.board.rows} />
+        </div>
       </GameDone.Provider>
     </Dispatch.Provider>
   )

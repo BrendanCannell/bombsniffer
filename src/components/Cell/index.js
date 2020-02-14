@@ -1,4 +1,5 @@
 import React from 'react'
+import LongPress from "../LongPress"
 import {Dispatch, GameDone} from "../../context"
 import {useContext} from "../../hooks"
 import {FontAwesomeIcon as Icon} from '@fortawesome/react-fontawesome'
@@ -13,11 +14,11 @@ export default function Cell(props) {
   let gameDone = useContext(GameDone)
   let dispatch = useContext(Dispatch)
   let select = () => {
-    if (!revealed && !flagged && !gameDone)
+    if (!flagged && !gameDone)
       dispatch({type: 'select',        location: location, time: Date.now()})
   }
   let toggleFlagged = (evt) => {
-    evt.preventDefault()
+    if (evt) evt.preventDefault()
     if (!revealed && !gameDone)
       dispatch({type: 'toggleFlagged', location: location, time: Date.now()})
   }
@@ -25,7 +26,6 @@ export default function Cell(props) {
       "cell",
       flagged  && "flagged",
       revealed && "revealed",
-      revealed && ("adjacent-bomb-count-" + adjacentBombCount),
       gameDone && bombed && "bombed"
     ]
     .filter(Boolean).join(" ")
@@ -36,12 +36,19 @@ export default function Cell(props) {
     : revealed && adjacentBombCount > 0 ? adjacentBombCount
     : null
   return (
-    <span
-      className={className}
-      onClick={select}
-      onContextMenu={toggleFlagged}
+    <LongPress
+      time={500}
+      onLongPress={toggleFlagged}
+      onPress={select}
     >
-      {center}
-    </span>
+      <span
+        className={className}
+        onClick={select}
+        onContextMenu={toggleFlagged}
+        data-adjacent-bomb-count={revealed ? adjacentBombCount : null}
+      >
+        {center}
+      </span>
+    </LongPress>
   )
 }

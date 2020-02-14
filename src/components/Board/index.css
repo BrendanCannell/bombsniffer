@@ -1,23 +1,21 @@
 .board {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
-  padding: 1px;
 }
 
 .board > * > * {
-  width: 25px;
-  height: 25px;
-  border-top:    solid 1px gray;
-  border-left:   solid 1px gray;
+  width: 1.3em;
+  height: 1.3em;
 }
-.board > *:last-child > * {
-  border-bottom: solid 1px gray;
+
+.board > * > :last-child {
+  border-right-color:  #aaa;
 }
-.board > * > *:last-child {
-  border-right:  solid 1px gray;
+.board > :last-child > *{
+  border-bottom-color: #aaa;
 }
 
 .row {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
 }

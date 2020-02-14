@@ -1,35 +1,47 @@
 .cell {
-  padding: 0.1em;
+  box-sizing: border-box;
   line-height: 1;
   color: black;
+  border-style: solid;
   text-align: center;
   user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cell.revealed {
-  background-color: white;
+  background-color: #bdbdbd;
+  border-width: 1px;
+  border-color: #7b7b7b #0000 #0000 #7b7b7b;
 }
 .cell:not(.revealed) {
-  background-color: lightgray;
+  background-color: #bdbdbd;
+  border-width: 2px;
+  border-color: #fff #7b7b7b #7b7b7b #fff;
 }
 
 .board:not(.game-done) .cell.flagged,
 .board.game-done       .cell.flagged.bombed {
   color: red;
 }
-.board.game-done       .cell.flagged:not(.bombed),
+.board.game-done       .cell.flagged:not(.bombed) {
+  background-color: red;
+  color: white;
+}
 .board.game-done       .cell.bombed.revealed {
   background-color: red;
+  border-color: red;
   color: white;
 }
 
 /* 1-4 are from Minesweeper */
-.adjacent-bomb-count-1 { color: blue; }
-.adjacent-bomb-count-2 { color: green; }
-.adjacent-bomb-count-3 { color: red; }
-.adjacent-bomb-count-4 { color: navy; }
+[data-adjacent-bomb-count*="1"] { color: blue; }
+[data-adjacent-bomb-count*="2"] { color: green; }
+[data-adjacent-bomb-count*="3"] { color: red; }
+[data-adjacent-bomb-count*="4"] { color: navy; }
 /* 5-8 are just made up */
-.adjacent-bomb-count-5 { color: orange; }
-.adjacent-bomb-count-6 { color: purple; }
-.adjacent-bomb-count-7 { color: turquoise; }
-.adjacent-bomb-count-8 { color: pink; }
+[data-adjacent-bomb-count*="5"] { color: orange; }
+[data-adjacent-bomb-count*="6"] { color: purple; }
+[data-adjacent-bomb-count*="7"] { color: turquoise; }
+[data-adjacent-bomb-count*="8"] { color: pink; }
