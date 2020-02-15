@@ -59,7 +59,9 @@ export function isLose(board) {
 export function isWin(board) {
   if (isLose(board)) return false
   let counts = getCounts(board)
-  let isWon = counts.cells === counts.flagged + counts.revealed
+  let correctFlagCount = counts.flagged === counts.bombed
+  let allCellsKnown = counts.cells === counts.flagged + counts.revealed
+  let isWon = correctFlagCount && allCellsKnown
   return isWon 
 }
 

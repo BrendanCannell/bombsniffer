@@ -12,17 +12,22 @@ function Display(props) {
   let newGame = useCallback(() => dispatch({type: 'newGame'}), [dispatch])
   let gameDone = useContext(GameDone)
   let icon = iconsByGameDone[gameDone]
-  let formatDigits = n => (n % 1000).toString(10).padStart(3, "0")
+  let formatDigits = n =>
+    n >= 0
+      ?       ( n % 1000).toString(10).padStart(3, "0")
+      : "-" + (-n % 1000).toString(10).padStart(2, "0")
   return (
-    <div className="header">
-      <div className="bombs-remaining numbers">
-        {formatDigits(props.bombsRemaining)}
-      </div>
-      <button className="new-game" onClick={newGame}>
-        <Icon icon={icon} />
-      </button>
-      <div className="elapsed-seconds numbers">
-        {formatDigits(props.elapsedSeconds)}
+    <div className="header-container">
+      <div className="header">
+        <div className="bombs-remaining numbers">
+          {formatDigits(props.bombsRemaining)}
+        </div>
+        <button className="new-game" onClick={newGame}>
+          <Icon icon={icon} />
+        </button>
+        <div className="elapsed-seconds numbers">
+          {formatDigits(props.elapsedSeconds)}
+        </div>
       </div>
     </div>
   )

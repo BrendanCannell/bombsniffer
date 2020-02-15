@@ -1,38 +1,15 @@
-/* .header {
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.elapsed-seconds {
-  flex-grow: 1;
-  float: left;
-  text-align: left;
-}
-
-.bombs-remaining {
-  flex-grow: 1;
-  float: right;
-  text-align: right;
-}
-
-button.reset {
-  position: absolute;
-  margin: auto 0;
-  background-color: lightgray;
-  border-width: 2px;
-  border-color: #eee #aaa #aaa #eee;
-  flex-grow: 0;
-} */
-
 @font-face {
   font-family: 'Digits';
-  src: local('Digits'), url(./Open\ 24\ Display\ St.ttf) format('truetype');
+  src: local('Digits'), url(./Digitaldream.ttf) format('truetype');
 }
 
-.header {
+.header-container {
   position: relative;
   background-color: #c0c0c0;
+  padding: 0.5em;
+}
+.header {
+  position: relative;
 }
 .bombs-remaining {
   left: 0;
@@ -45,34 +22,23 @@ button.reset {
   position: absolute;
   top: 1px;
   z-index: 1;
-  border: 1px solid;
-  border-color: #808080 #fff #fff #808080;
   background-color: black;
   color: red;
   /* Arbitrary values needed to position the digits correctly */
   font-family: 'Digits';
-  font-size: 2.3em;
-  line-height: 0.6;
-  height: 0.8em;
-  padding-left: 0.05em;
+  font-size: 1.5em;
+  line-height: 1;
+  height: 1.05em;
+  padding-left: 0.08em;
+  padding-top: 0.08em;
 }
 
 .new-game {
   display: block;
-  font-size: 1.5em;
+  font-size: 1.25em;
   margin: 0 auto;
   background-color: #bdbdbd;
   border-width: 2px;
   border-color: #fff #7b7b7b #7b7b7b #fff;
   color: #ffff01
 }
-
-/* .numbers .t0 {
-  background-position: 0 0;
-}
-.numbers div {
-  float: left;
-  width: 13px;
-  height: 23px;
-  background: url(https://raw.githubusercontent.com/joelbyrd/external-resources/master/images/minesweeper.png) no-repeat;
-} */
